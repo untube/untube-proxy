@@ -1,42 +1,29 @@
 version: '2.1'
 services:
     untube-proxy:
-        image: baangaritar/1e-videos-proxy
-	depends_on:
-          - untube-api
-        ports:
-          - "80:80"
+      image: baangaritar/1e-videos-proxy
+      depends_on:
+        - untube-api
+      ports:
+        - "80:80"
     untube-api:
       image: baangaritar/1e-videos-api-gateway
       environment:
-	PORT: '5000'
-	SHOW_URLS: 'true'
+        PORT: '5000'
+        SHOW_URLS: 'true'
 
-	USERS_ENTRY: 'auth'
+        USERS_ENTRY: 'auth'
         USERS_PORT: '3000'
         USERS_URL: '35.196.3.185'
       
-	MANAGER_ENTRY: 'uploadVideos'
-	MANAGER_PORT: '3001'
-        MANAGER_URL: '35.196.3.185'
+        RECOMMENDATIONS_ENTRY: 'recommendations'
+        RECOMMENDATIONS_PORT: '3003'
+        RECOMMENDATIONS_URL: '35.196.3.185'
       
-	REPRODUCTION_ENTRY: 'videos'
-	REPRODUCTION_PORT: '3002'
-	REPRODUCTION_URL: '35.196.3.185'
-      
-	RECOMMENDATIONS_ENTRY: 'recommendations'
-	RECOMMENDATIONS_PORT: '3003'
-	RECOMMENDATIONS_URL: '35.196.3.185'
-      
-	COMMENTARIES_ENTRY: 'feedback/resources/commentaries'
-	COMMENTARIES_PORT: '3004'
-	COMMENTARIES_URL: '35.196.3.185'
+        COMMENTARIES_ENTRY: 'feedback/resources/commentaries'
+        COMMENTARIES_PORT: '3004'
+        COMMENTARIES_URL: '35.196.3.185'
 
-    mongodb:
-      image: mongo:latest
-      ports:
-        - 27017:27017
-  
     feedback-db:
       image: mysql:5.7
       ports:
@@ -62,40 +49,25 @@ services:
     recommendations-db:
       image: postgres
 
-    
-
     users-ms:
       image: baangaritar/1e-videos-user-ms
       environment:
-	PORT: '3000'
+        PORT: '3000'
       depends_on:
         - 'users-db'
-    
-    video-manager-ms:
-      image: baangaritar/1e-videos-manager-ms
-      environment:
-	PORT: '3001'
-      depends_on:
-        - 'mongodb'
-    
-    video-reproduction-ms:
-      image: baangaritar/1e-videos-reproduction-ms
-      environment:
-	PORT: '3002'
-      depends_on:
-        - 'mongodb'
+
     
     recommendations-ms:
       image: baangaritar/1e-videos-recommendations-ms
       environment:
-	PORT: '3003'
+        PORT: '3003'
       depends_on:
         - recommendations-db
     
     feedback-ms:
       image: baangaritar/1e-videos-feedback-ms
       environment:
-	PORT: '3004'
+        PORT: '3004'
       depends_on:
         - 'feedback-db'
      
